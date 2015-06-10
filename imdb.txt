@@ -1,0 +1,8 @@
+a <- read.fwf('ratings.list', widths=c(17, 9, 5, 100), skip=28, n=100, fill=T, colClasses=c("character", "integer", "numeric", "character"), header=F)
+
+читает по ширине
+пропускаю все до данных, заголовки в 27 не хочет читать
+читаю 100 строк
+заполняю пустые
+классы вручную выставляю
+без заголовков

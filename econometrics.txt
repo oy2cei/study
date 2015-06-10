@@ -1,0 +1,29 @@
+d2 <- cars
+model <- lm(data=d2, dist~speed) один регрессор спид
+model
+увидим бета1 и бета2
+beta_hat <- coef(model) koeff
+eps_hat <- residuals(model) jstatki
+y <- d2$dist
+y_hat <- fitted(model)
+RSS <- deviance(model)
+TSS <- sum( (y-mean(y))^2 )
+ESS <- TSS - RSS
+R2 <- ESS/TSS
+or
+R2 <- cor(y, y_hat)^2
+X <- model.matrix(model)
+nd <- data.frame(speed=c(40,60)) Новый набор
+predict(model, nd) прогноз по модели нового набора данных
+
+
+t <- swiss
+model2 <- lm(data=t, Fertility~Agriculture+Education, Catholic)
+coef(model2)
+fitted(model2) спрогнозированные переменные
+
+report <- summary(model2)
+
+nd2 <- data.frame(Agriculture=0.5, Catholic = 0.5, Education = 20)
+
+predict(model2, df2)
