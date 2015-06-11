@@ -1,0 +1,47 @@
+dataFrame <- data.frame(x = x, y = y) //задать матрицу из заранее определЄнных х и у
+dist(dataFrame) //найти рассто€ни€ между каждым х и у
+
+dataFrame <- data.frame(x = x, y = y)
+distxy <- dist(dataFrame)
+hClustering <- hclust(distxy) //функци€ кластеризации
+plot(hClustering) //график кластера, дендрограмма
+
+
+set.seed(143)
+dataMatrix <- as.matrix(dataFrame)[sample(1:12), ]
+heatmap(dataMatrix) //диаграмма матрицы. разобратьс€ с этим
+
+
+
+
+K-means Clustering
+dataFrame <- data.frame(x, y)
+kmeansObj <- kmeans(dataFrame, centers = 3) //обработка функцией, поиск 3-х центров и т.п.
+names(kmeansObj) //вывод имЄн объекта
+
+par(mar = rep(0.2, 4)) //расширение границ
+plot(x, y, col = kmeansObj$cluster, pch = 19, cex = 2) //график с цветом по центрам
+points(kmeansObj$centers, col = 1:3, pch = 3, cex = 3, lwd = 3) //вывод самих центров другими фигурами
+
+
+set.seed(1234)
+dataMatrix <- as.matrix(dataFrame)[sample(1:12), ]
+kmeansObj2 <- kmeans(dataMatrix, centers = 3)
+par(mfrow = c(1, 2), mar = c(2, 4, 0.1, 0.1))
+image(t(dataMatrix)[, nrow(dataMatrix):1], yaxt = "n") //Heatmaps. цветное изображение, цвет зависит от значени€
+image(t(dataMatrix)[, order(kmeansObj$cluster)], yaxt = "n") //Heatmaps
+
+svd() //Compute the singular-value decomposition of a rectangular matrix. —ингул€рное разложение матрицы M позвол€ет вычисл€ть сингул€рные числа данной матрицы, а также, левые и правые сингул€рные векторы матрицы M
+
+prcomp() //ћетод главных компонент.  один из основных способов уменьшить размерность данных, потер€в наименьшее количество информации. 
+
+
+
+
+
+
+
+
+
+
+

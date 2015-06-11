@@ -1,0 +1,506 @@
+sessionInfo() версии всего ПО
+
+
+перед анализом данных проверить что имеем
+class
+str
+summary
+names
+dim
+nrow
+ncol
+length
+object.size
+head
+tail
+
+file.create(...)
+file.exists(...)
+file.remove(...)
+file.rename(from, to)
+file.append(file1, file2)
+file.copy(from, to, overwrite = FALSE)
+file.symlink(from, to)
+dir.create(path, showWarnings = TRUE, recursive = FALSE)
+
+
+read.fwf("ksst8110.for", widths = c(14, 5,9, 4,9, 4,9, 4,4), skip = 4) //чтение файла с фиксированной шириной столбцов
+
+
+range(x0sub, x1sub, na.rm = T) разброс данных
+
+симуляции данных
+sample() //случайные цифры
+rbinom
+rnorm //by default: mean 0 and standard deviation 1
+rpois // lambda = mean?
+rexp
+rgamma
+
+quantile(X,probs=c(0.5,0.75,0.9)) // какое значение делит ряд по квантилям. половина значений будет больше или меньше 9
+50% 75% 90% 
+  9  11  12
+
+median(X) в этом случае будет равно квантилю 50%, т.е. 9
+
+any(is.na(X)) проверка на NA, есть ли хоть один
+sum(is.na(X)) проверка и сумма кол-ва NA 
+all(X > 0) проверка все ли Х больше 0
+colSums(is.na(restData)) сумма NA по всем столбцам
+all(colSums(is.na(restData))==0) все ли суммы NA по столбцам равны 0
+
+table(restData$zipCode %in% c("21212")) кол-во строк со значением 21212 в столбце зипкод. в виде табл
+restData[restData$zipCode %in% c("21212","21213") & restData$councilDistrict==12, ] выборка строк только с определенными значениями по столбцам
+
+restData$nearMe = restData$neighborhood %in% c("Roland Park", "Homeland") //добавить новый столбец с проверкой ябляется ли значение в рамках указанных. потом можно агрегировать с помощью table
+
+ifelse(test, yes, no) //быстрая проверка и возврат в случае выполнения и невыполнения
+
+cnames <- readLines("RD_501_88101_1999-0.txt", 1) считать первую строку файла, там имена
+cnames <- strsplit(cnames, "|", fixed = T) разделить на список 
+
+mean(is.na(x0)) проверить долю NA
+
+
+cut //Convert Numeric to Factor
+relevel //переопределить порядок факторов
+
+plot(x = cars$speed, y = cars$dist, xlab = "Speed", ylab = "Stopping Distance")
+boxplot //можно использовать формулы x ~ y (связаны)
+
+replicate //повторить необходимое кол-во раз
+hist //build histogramm
+
+Each probability distribution in R has an
+r*** function (for "random")
+d*** function (for| "density")
+p*** (for "probability")
+q*** (for "quantile")
+
+
+
+strptime //convert into the Date n time
+difftime //разница во времени t1 - t2 в любых ЕИ
+
+
+xtabs() //перекрестная таблица зависимостей. разобраться
+xtabs(Freq ~ Gender + Admit,data=DF) //свод по данным Freq, в разрезе Gender и Admit. в Freq должны быть данные, которые суммируются
+xtabs(Freq ~ .,data=DF) // по всем разрезам, если их больше 2, то несколько таблиц. в этом случае лучше использовать:
+	ftable() //получается сводная таблица, а не список таблиц
+
+sort() //сортировка вектора
+
+
+aggregate(count ~ spray, InsectSprays, mean) //среднее по count агрегироваать по spray
+
+print(object.size(FDATA), units="Mb") //размер в мегабайтах
+
+library
+dplyr - data manipulation
+ggplot2 - vizualisation
+
+
+
+%some% свой бинарный оепратор, как функция задаётся
+
+viewinfo() проверить эту функцию на данных
+unique() //только уникальные элементы
+
+library(data.table)
+
+file.create
+dir.create
+и т.п. работа с файлами
+
+?':' помощь по знакам
+seq(0, 10, by=0.5)
+seq(5, 10, length=30)
+
+paste(1:3, c("X", "Y", "Z"), sep = "")
+[1] "1X" "2Y" "3Z"
+
+x[!is.na(x)] //убрать все NA из вектора
+
+work with boolean/logical
+any(), all(), which()
+
+all(x>1) //все ли значения больше 1
+any(is.na(X)) //проверяет, встречались ли TRUE
+table() //представить данные в виде таблицы значение:кол-во
+quantile() //посмотреть разброс данных
+colSums(is.na(X)) //просуммирует все столбцы, если там есть NA
+
+X[X$var1 %in% c("123", "names3")] //отбор всей таблицы, в которой вар1 равен 123 или тэймс3
+
+X[which(X$var3>8), ] //строки в var3 с NA, поэтому использую which
+X[order(X$var1),] //упорядочить массив по переменной var1
+X[order(X$var1, X$var3),] //по двум
+X$var5 <- //добавить переменную 5
+
+good <- complete.cases(airquality) //тип логический, исключает NA
+working <- airquality[good, ] //вывод только хороших строк и всех столбцов
+
+head(airquality, 6) //вывод заголовков и первых 6 строк
+
+airquality[good, 1] //вывод только хороших строк из 1 столбца
+
+airquality[good, ][1:6, 1] //вывод [хороших первых шести строк 1-го столбца
+
+class(airquality) //определить класс объекта
+
+write.table(head(x), "headers_X.csv", sep=",") //запись в файл
+
+subset(working$Solar.R, working$Ozone > 31&working$Temp> 90) //выборка из столбца Solar.R в случае выполнения одновременно 2 условий. и(&) или (|)
+
+subset(airquality$Temp, airquality$Month == 6) //выборка из исходной таблица (в т.ч. NA) где месяц равен 6
+max(x, na.rm=1) //максимум из выборки Х с исключением 
+NA
+
+library(swirl) //загрузить библиотеку swirl
+
+seq_along(x) //создаст последовательность цифр по кол-ву элементов в Х
+seq_len(10) // создать последовательность из 10 цифр
+
+for(i in x) print(i) //перечисляет все элементы вектора Х
+
+nrow(a) или ncol(a) // кол-во строк или столбцов в матрице
+
+if, else: testing a condition
+for: execute a loop a fixed number of times
+while: execute a loop while a condition is true
+repeat: execute an infinite loop
+break: break the execution of a loop
+next: skip an interation of a loop
+return: exit a function
+
+if(<condition1>) {
+ ## do something
+} else if(<condition2>) {
+ ## do something different
+} else {
+ ## do something different
+}
+
+
+above10 <- function(x, n = 10){ //создание функции с значением по умолчанию=10
+  use <- x > n
+  x[use]
+}
+
+
+
+columnmean <- function(y, removeNA = TRUE){ //среднее в каждом столбце матрицы
+              nc <- ncol(y) //кол-во столбцов
+              means <- numeric(nc) //вектор со средними
+              for(i in 1:nc){ /цикл с кол-вом столбцов
+                  means[i] <- mean(y[,i], na.rm = removeNA) расчёт средних и удаление NA
+              }
+              means
+}
+
+
+search() //загруженные библтотеки
+
+ls(environment(func)) //какие переменные задаёт среда func, это моя функция
+get("z", environment(func)) //значение переменных из опр. среды
+
+
+?func - описание функции func
+args("func") - аргументы функции
+func - код который выполняет функция
+x[x %in% 1:5] <- 0 обнулить всё в диапазоне
+
+
+
+optim, nlm, optimize //максимизация, минимизация функций
+
+выравнивать код (8 пробелов),
+ограничить ширину кода (80 символов),
+ограничить размер функции одним листом/логическим действием/функциональностью,
+
+
+weekdays, months, quarters //функции определения дат
+
+
+unclass(z) //разбор на имена объектов со значениями, или значение
+names(z) // имена объектов
+
+
+POSIXct //кол-во секунд с 01.01.1970
+POSIXlt // список с сасом, минутой, сек
+as.POSIXlt(date)$year //извлечь год, если дата была в столбце date (plyr)
+
+strptime //преобразовать дату
+
+getwd() //рабочая папка
+list.files() //все файлы
+
+
+
+
+работает
+pollutantmean <- function(directory, pollutant, id = 1:332){ ## задаю функцию
+        file_list <- list.files(directory,pattern="*.csv", full.names=1) ##считываю из папки все csv файлы, с названием пути
+        vec2mean <- NA ##обнуляю вектро, в который буду складывать отобранные столбцы
+        for(i in id){ ##цикл по всем файлам
+                raw_csv <- read.csv(file_list[i]) ##считываю каждый файл
+                data_id <- raw_csv[, pollutant] ##выделяю нужный столбец
+                vec2mean <- c(vec2mean, data_id) ##складываю все столбцы в один вектор
+        }
+        mean(vec2mean, na.rm = T) ##среднее по вектору без учета NA
+}
+
+
+
+complete <- function(directory, id = 1:332) { ## задаю функцию
+        file_list <- list.files(directory,pattern="*.csv", full.names=1) ##считываю из папки все csv файлы, с названием пути
+        nobs <- NULL ## начальному вектору присваиваю пустое
+        for(i in id){ ##цикл по всем файлам в индексе id
+                raw_csv <- read.csv(file_list[i]) ##считываю каждый файл
+                sum_cc <- sum(complete.cases(raw_csv)) ## нахожу сумму complete.cases для i-го файла
+                nobs <- c(nobs, sum_cc) ## складываю значения в вектор
+        }
+        return(data.frame(id, nobs)) ## вывожу таблицей два нужных вектора
+}
+
+
+
+
+
+работает
+corr <- function(directory, threshold = 0) { ## задаю функцию
+        file_list <- list.files(directory,pattern="*.csv", full.names=1) ##считываю из папки все csv файлы, с названием пути
+        cors <- NULL ## начальному вектору присваиваю пустое
+        for(i in 1:length(file_list)){  ##! цикл по всему кол-ву файлов. Можно 332 заменить на length(file_list), использовать длину списка файлов
+                raw_csv <- read.csv(file_list[i]) 
+                if(sum(complete.cases(raw_csv)) > threshold) { ## проверка кол-ва полных выборок (complete.cases) выше порога threshold 
+                        items <- cor(raw_csv$sulfate, raw_csv$nitrate, use = "complete.obs") ## записываю вариацию каждого файла в переменную, используя только полные выборки (complete.cases)
+                        cors <- c(cors, items) ## формирую вектор вариаций
+                } 
+                
+        } 
+        return(cors)
+}
+
+
+
+
+
+<<- #делает/меняет переменную глобально
+
+lapply(x, func, ...) #применяет функцию с аргументами к списку. 
+sapply - упрощает тот же результат
+vapply //требует указать в каком виде возвращать результат
+tapply //вектор разделяет по фактору(второму вектору) и применяет функцию
+
+table() //позволяет представить данные в табличном виде с кол-вом встречаний в векторе
+
+unlist() //расформировать список
+
+для работы с матрицей можно применять
+rowSums
+rowMeans
+colSums
+colMeans
+
+array #массив данных, например 2*2*10
+
+mapply(func, args) //позволяет передавать в функцию векторы
+
+split //разделить данные по факторам
+
+str() //информация про все поля
+
+
+
+
+
+methods(help) // выводит список методов, применимых к объекту 
+methods(class = numeric) // выводит список методов, применимых к объекту класса - a
+
+
+
+set.seed(1) //задать начальное число, при котором будут генерироваться одинаковые случайные цифры
+rnorm(5) // сгенерировать 5 случаных чисел с норм распределением
+
+
+system.time()//время которое занимает функция
+Rprof()//сколько тратится времени на все вложенные функции
+summaryRprof
+
+
+распределения
+префикс norm, pois, 
+префиксы
+d for density (плотность)
+r for random number generation
+p for cumulative distribution (накопленная)
+q for quantile function (квантиль, порядковая статистика)
+
+
+
+
+
+
+rankall <- function(outcome, num = "best") {
+        out <- read.csv("outcome-of-care-measures.csv", colClasses = "character") ## Read outcome data
+        states <- levels(as.factor(out$State)) #все возможные штаты
+        outcomes <- c("heart attack", "heart failure", "pneumonia") #возможные параметры отбора
+        
+        
+        if(outcome %in% outcomes) {} ## проверка штата и болезни
+        else {stop("invalid outcome")}
+        
+        ## сделать сплит, потом ранжировать каждый
+        
+        out2 <- out[ , c(2,7,11,17,23)] ##выбираю только нужные столбцы
+        out2[,c(3,4,5)] <- suppressWarnings(lapply(out2[,c(3,4,5)], as.numeric)) ##поменять класс столбца на числовой, warning
+        names(out2) <- c("HospName", "State", outcomes)
+        
+        ## spl <- split(out2, out2$State)
+        ## sapply(spl, spl[order(spl$pneumonia, spl$HospName, decreasing=F, na.last=NA)),]
+        DF <- NULL
+        for(i in states){
+                df <- out2[,c("HospName", "State", outcome)]
+                df2 <- subset(df, df$State==i)
+                df3 <- df2[complete.cases(df2),]
+                df_ord <- df3[order(df3[,outcome], df3$HospName, decreasing=F, na.last=NA),]
+                df_ord$rank <- order(df_ord[,outcome])
+                DF <- rbind(DF, subset(df_ord[,c(1,2)], df_ord$rank==num))
+                
+        }
+        return(DF)
+        ## df2 <- df[,c("HospName", "State", "pneumonia")]
+        ## df3 <- df2[complete.cases(df2),]
+        ## df_ord <- df3[order(df3$pneumonia, df3$HospName, decreasing=F, na.last=NA),]
+        ## df_ord$rank <- order(df_ord$pneumonia)
+        ##Q <- F
+        ##if(num == "worst") {
+        ##        num <- 1
+        ##        Q <- T        }
+        ## else if(num == "best") num <- 1
+        ## out3 <- out2[order(out2[,outcome], out2[,1], decreasing = Q, na.last=NA),] ##отранжировал
+        ## return(out3[num, 1])
+}
+
+
+
+merge(df1, df2, by.x="id12", by.y="id100", all=TRUE) //объединение двух таблиц дф1 и дф2 по указанным столбцам, если будут несовпадения в столбцах, просто добавить все строки с NA для недостающих столбцов из другой таблицы
+
+
+intersect(names(df1), names(df2)) //пересечения по именам столбцов
+
+в списке может юыть другой список, таблица, и пр.
+my_list[1] //первый элемент списка
+my_list[[1]] //сам первый список
+my_list[[1]][1] //первый элемент из первого списка
+
+
+
+tolower(names(cameraData)) //названия столбцов в нижнем регистре
+toupper()
+
+strsplit(names(cameraData),"\\.") //разбить строку. двойной \\ используется т.к. точка служебный символ
+
+присвоить списку первые элементы списков внутри него
+firstElement <- function(x){x[1]}
+sapply(splitNames,firstElement)
+
+
+sub("_","",names(reviews),) //удалить подчеркивание
+gsub() //удалить все вхождения
+
+
+grep("Alameda",cameraData$intersection) //поиск вхождения строки, вернет номер єлемента
+grep("Alameda",cameraData$intersection,value=TRUE) //вернет сам элемент
+
+grepl() //возвращает boolean
+
+
+
+
+работа с текстом
+^i think //поиск всех строк, которые начинаются с выражения
+morning$ //поиск строк заканчивающихся словом
+
+[Bb][Uu][Ss][Hh] //все комбинации слова буш, большие и маленькие буквы
+[a-z] //все маленькие буквы от и до
+[a-zA-Z]
+
+[^?.]$ //ищем строки заканчивающиеся не на . и вопр знак
+
+. //означает любой символ
+expr1|expr2 // символ | - поиск выражения 1 или выражения 2
+
+^[Gg]ood|[Bb]ad //поиск в начале строки слово хороший с любой буквы, или слово плохой в любом месте строки
+^([Gg]ood|[Bb]ad) //поиск в начале строки
+[Gg]eorge( [Ww]\.)? [Bb]ush // необязательный параметр ( [Ww]\.) Точка с обр. косой, т.к. это служебн символ
+* - любое кол-во повторений, включая 0
++ - повторение хотя бы 1 раз
+(.*) //поиск любого выражения в скобках, включая пустые скобки
+
+[0-9]+ (.*)[0-9]+ //любая цифра, любые символы, ещё любая цифра
+
+[Bb]ush( +[^ ]+ +){1,5} debate //слово буш, после него минимум 1 пробел, потом что-то отличное от пробела, потом ещё минимум 1 пробел, всё это может встретиться от 1 до 5 раз, после чего будет слово дебаты
+фактически бежду буш и дебаты должно быть от 1 до 5 слов
+
+{1,5} кол-во вхождений от 1 до 5
+{5} кол-во вхождений = 5
+{5б} кол-во как минимум = 5
+
+ +([a-zA-Z]+) +\1 + //поиск пробела, любого слова, \1 означает повтор выражения, т.е. одного и того же слова
+
+^s(.*)s //* ищет всегда самую длинную строку, которая удовлетворяет условию. поиск в начале строки слово с буквы s, потом любое кол-во символов, после которых будет буква s
+^s(.*?)s //найдёт не максимально длинную строку, а первую попавшуюся
+
+
+
+format(d2,"%a %b %d") //переформатирование данных. в т.ч. даты
+
+
+
+pal <- colorRamp(c("red", "blue")) //функция принимает цвет и интерполирует от 0 до 1 переход цветов от красного до синего
+
+pal(0) красный
+pal(1) синий
+pal(0.5) красно-синий
+pal(seq(0, 1, len = 10)) градация из 10 цветов, палитра от красного до синего
+
+pal <- colorRampPalette(c("red", "yellow")) палитра в шестандацитиричном представлении
+pal(2) палитра из двух цветов, красный и желтый
+pal(10) палитра из 10 цветов от красного с переходом к жёлтому
+
+
+
+
+library(RColorBrewer)
+схемы цветов
+Sequential для упорядоченных данных
+Diverging для данных отклоняющихся от целевых
+Qualitative для неупорядоченных данных
+
+cols <- brewer.pal(3, "BuGn") задать 3 цвета из готовой палитры
+pal <- colorRampPalette(cols)
+pal(20) сделать градацию из 20 цветов по выбранным трём
+
+smoothScatter(x,y) сделать цветную гистограмму, большое скопление точек показано темным цветом, малое-бледным
+
+rgb() указать цвета и прозрачность
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

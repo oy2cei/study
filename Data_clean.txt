@@ -1,0 +1,49 @@
+1. исходные данные
+2. обработанные данные, массив
+3. описание переменных, ЕИ, строк, столбцов, и т.п.
+4. Перечень преобразований, методов очистки данных, что добавлено/исключено и пр. как из сырого вида получен структурированный
+ 
+
+
+
+
+library(xlsx) or XLConnect //библиотеки для работы с файлами
+read.xslx()
+
+library(xml)
+library(jsonlite) //for JSON
+
+команды
+xmlTreeParse
+htmlTreeParse
+
+library(data.table)
+
+
+
+fileUrl = "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml"
+fileUrl = sub('https', 'http', fileUrl) //меняют хттпс на хттп
+Q4 = xmlTreeParse(fileUrl, useInternal=TRUE) //читаю файл
+by_zip <- xpathSApply(Q4, "//zipcode", xmlValue) //выбираю значения под тегом зипкод
+a <- by_zip[by_zip==21231] //нахожу значения = 21231
+
+
+
+
+
+Principle 1: Show comparisons
+Principle 2: Show causality, mechanism, explanation
+Principle 3: Show multivariate data
+Principle 4: Integrate multiple modes of evidence (таблицы, картинки, графики)
+Principle 5: Describe and document the evidence
+Principle 6: Content is king (красивая "история")
+
+
+парадокс Симпсона
+не суммировать разные по сути данные
+найти переменную, по которой можно разделить, и группы оказались непропорциональными по объёму
+
+
+
+imdb
+a<-read.table('ratings.list',header=T,sep="\t",colClasses="character",quote="",comment.char="", skip=24, nrow=100)
