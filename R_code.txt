@@ -491,9 +491,15 @@ rgb() указать цвета и прозрачность
 
 
 
+to source() UTF-8 R script use func
 
+source.utf8 <- function(f) {
+    l <- readLines(f, encoding="UTF-8")
+    eval(parse(text=l),envir=.GlobalEnv)
+}
 
-
+or use
+eval(parse(filename, encoding="UTF-8"))
 
 
 

@@ -1,4 +1,4 @@
-library("psych") # описательные статистики
+﻿library("psych") # описательные статистики
 library("dplyr") # манипуляции с данными
 library("ggplot2") # графики
 library("GGally") # еще графики
@@ -20,7 +20,7 @@ qplot(data=d2,speed,dist)
 model <- lm(data=d2, dist~speed)
 model
 
-coef(model) # оценки бет
+coef(model) # оценки бет коэффицитенты
 residuals(model) # остатки (эпсилон с крышкой)
 y_hat <- fitted(model) # прогнозы (игрек с крышкой)
 y <- d2$dist # значения зависимой переменной
