@@ -503,6 +503,11 @@ eval(parse(filename, encoding="UTF-8"))
 
 
 
+library(RSQLite)
+sqlite <- dbDriver("SQLite")
+a <- dbConnect(sqlite,"tut.db")
+
+
 
 
 
