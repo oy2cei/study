@@ -1,0 +1,383 @@
+big 6 reserved keywords:
+
+SELECT
+FROM
+WHERE
+GROUP BY
+HAVING
+ORDER BY
+
+
+
+
+
+SELECT с операторами обозначаю как ( - )
+SELECT * FROM PC; - выбрать всё из БД
+SELECT price, speed, hd, ram, cd, model, code FROM PC; выбрать столбцы из БД
+SELECT DISTINCT speed, ram FROM PC; выбрать только уникальные
+- ORDER BY ram DESC; упорядочить по полю ram по убыванию (этот оператор указываем последним) или возрастанию ASC 
+- ORDER BY ram DESC, speed DESC; сортировка по двум столбцам
+
+
+
+
+commands
+
+SHOW tables; показать все таблицы mySQL only
+order by price, invoice desc limit 3; отсортировать. ставить в самом конце запроса. оставить только 3 верхние записи
+...where name like 'john%' выбирать только с именем содержащим слово джон
+SELECT * FROM cars WHERE color IN ( 'red' , 'black' , 'white' ) выбрать только с определёнными цветами. упрощает использование нескольких OR
+SELECT smartphone , price FROM gadjets WHERE price between 150 AND 250 выбор цены в пределах
+
+исользовать в кавычках '[x]%'
+% любой пропущенный символ/ы
+[abc] means there will be 'a' OR 'b' OR 'c' in the results.
+[^xyz] there will NOT be 'x' OR 'y' OR 'z' in the results. 
+[a-z], which means any symbols from a to z will be selected.
+
+SELECT * FROM orders WHERE invoice_number LIKE 'E%' выбрать заказы начинающиеся с "Е"
+
+SELECT * FROM orders WHERE LCASE (invoice_number) LIKE 'e%' выбрать заказы начинающиеся с "Е", если неизвестно большими или маленькими буквами номер инвойса
+
+LCASE, UCASE, ROUND, LEN, NOW
+len(text_column) – return length of string in column
+round(float_column, decimals) – return rounded numeric column to the number of decimals specified. например decimals=2, округлить до двух знаков
+
+SELECT sum(loan) FROM users просуммировать столбец лоан
+COUNT, MIN, MAX, AVG
+add a condition to a function (e.g.: SUM, AVG, COUNT) use HAVING.
+
+GROUP BY separates all rows into groups by value in a specified column or columns.
+
+UNION use DISTINCT at the result table, while UNION ALL doesn't.
+
+
+присоединить данные о клиентах в заказы
+select * from orders
+inner join clients
+on orders.client_id = clients.client_id
+
+
+соединить три таблицы
+SELECT * FROM A
+INNER JOIN B ON A.p1 = B.p1
+INNER JOIN C on B.p2 = C.p2
+
+
+select * from clients
+inner join orders 
+on orders.client_id=clients.client_id
+inner join payment_methods
+on orders.payment_method_id=payment_methods.payment_method_id
+
+одно и то же, только короче
+
+select * from clients c
+inner join orders o 
+on o.client_id = c.client_id 
+inner join payment_methods pm
+on o.payment_method_id = pm.payment_method_id
+
+
+RIGHT/LEFT/FULL OUTER JOIN
+
+
+select * from clients c 
+left join orders o 
+on c.client_id = o.client_id 
+
+
+агрегировать сумму
+select type_id, sum(o.price) 
+from orders o 
+join products p 
+on o.product_id = p.product_id 
+where o.order_date between '2014-12-01' and '2014-12-31' 
+group by p.type_id
+having sum(price)>1000
+
+
+подзапросы
+выбрать товары с ценой выше, чем у X-Mas Tree
+SELECT * FROM products 
+	WHERE price > (
+		SELECT price 
+		FROM products 
+		WHERE name LIKE 'X-Mas Tree' AND type_id = 0
+		) 
+	AND type_id = 0
+
+
+
+
+
+два условия
+
+SELECT * FROM products 
+	WHERE price > (
+		SELECT price 
+		FROM products 
+		WHERE name LIKE 'X-Mas Tree' 
+		) 
+	AND price < (
+		SELECT price 
+		FROM products 
+		WHERE name LIKE 'Quadrocopter' 
+		) 
+
+
+альясы и цикл?
+
+SELECT * 
+FROM clients c 
+WHERE '2014-12-24' IN (
+	SELECT order_date 
+	FROM orders o 
+	WHERE o.client_id = c.client_id 
+)
+
+или тот же результат +данные из ордерс
+
+SELECT * 
+FROM clients c
+JOIN orders o 
+  ON c.client_id = o.client_id 
+WHERE order_date = '2014-12-24'
+
+
+
+выбрать только те строки, которые есть в первом селекте и нет во втором
+select maker
+from 
+product p
+where type='PC'
+EXCEPT
+select maker
+from 
+product p
+where type='Laptop'
+
+
+выбрать только те строки, которые есть в обоих селектах
+INTERSECT
+
+
+
+
+сначала объединяем, потом применяем условия
+select distinct p.maker
+from PC
+join product p
+on PC.model=p.model
+where speed>=450
+
+
+
+найти среднее
+select sum(speed)/count(speed) from pc
+
+
+условие выполняется можно сказать одновременно с выборкой
+т.е. сначала отбираются свыше 1 тыс. а потом выполняется действие
+
+select avg(speed) from laptop
+where price>1000
+
+
+
+работает как: выбрать сразу из объединённой таблицы, а потом объединить
+
+select sum(speed)/count(speed) from product p
+join PC on p.model=PC.model
+where maker='A'
+
+
+посчитать кол-во моделей ПК, выпускаемых производителем А
+SELECT COUNT(DISTINCT model) AS Qty
+FROM PC
+WHERE model IN (SELECT model
+ FROM Product
+ WHERE maker = 'A')
+
+
+
+
+
+порядок обработки предложений в операторе SELECT:
+
+FROM
+WHERE
+GROUP BY
+HAVING
+SELECT
+ORDER BY
+
+или расширенная версия
+from
+ON
+JOIN
+where
+GROUP BY
+WITH CUBE или WITH ROLLUP
+HAVING
+SELECT
+DISTINCT
+ORDER BY
+TOP
+
+
+
+SELECT [DISTINCT | ALL]{*
+ | [<выражение для столбца> [[AS] <псевдоним>]] [,…]}
+FROM <имя таблицы> [[AS] <псевдоним>] [,…]
+[WHERE <предикат>]
+[[GROUP BY <список столбцов>]
+[HAVING <условие на агрегатные значения>] ]
+[ORDER BY <список столбцов>]
+
+
+Найти производителей, которые выпускают более одной модели, при этом все выпускаемые производителем модели являются продуктами одного типа.
+Вывести: maker, type
+SELECT maker, MAX(type) 
+FROM product 
+GROUP BY maker 
+HAVING COUNT(DISTINCT type) = 1 AND COUNT(model) > 1
+
+
+
+Найдите пары моделей PC, имеющих одинаковые скорость и RAM. В результате каждая пара указывается только один раз, т.е. (i,j), но не (j,i), Порядок вывода: модель с большим номером, модель с меньшим номером, скорость и RAM.
+
+
+SELECT DISTINCT p1.model, p2.model, p1.speed, p1.ram 
+FROM pc p1, pc p2 выбираем из декартова произведения с ункальными моделями 1
+WHERE p1.speed = p2.speed AND p1.ram = p2.ram AND p1.model > p2.model
+
+
+Найдите модели ПК-блокнотов, скорость которых меньше скорости любого из ПК. 
+Вывести: type, model, speed
+
+select distinct p.type, l.model, l.speed
+from laptop l, product p
+where 
+l.model=p.model
+and
+l.speed< (select min(pc.speed) from pc)
+
+
+
+
+select maker, r.price from product p
+join printer r
+on p.model=r.model
+and price=(
+select min(price)
+from printer
+where color='y'
+
+)
+
+
+
+Найдите производителей, которые производили бы как ПК
+со скоростью не менее 750 МГц, так и ПК-блокноты со скоростью не менее 750 МГц. Вывести: Maker
+
+SELECT DISTINCT maker 
+FROM product 
+WHERE model IN
+          (SELECT model 
+          FROM PC 
+          WHERE speed >= 750
+          ) 
+INTERSECT только пересекающиеся вывести
+
+SELECT DISTINCT maker 
+FROM product 
+WHERE  model IN
+          (SELECT model 
+          FROM Laptop 
+          WHERE speed >= 750
+          )
+
+
+
+задаю таблицу table_all объединяющую все нужные таблицы и потом её использую
+
+with table_all as(
+select model, price
+from pc
+
+union
+
+select model, price
+from laptop
+
+union
+
+select model, price
+from printer
+)
+select model from table_all
+where price=
+(select max(price) from table_all)
+
+
+В таблице Product найти модели, которые состоят только из цифр или только из латинских букв (A-Z, без учета регистра).
+Вывод: номер модели, тип модели.
+
+SELECT model, type FROM product 
+WHERE upper(model) NOT like '%[^A-Z]%' 
+OR model not like '%[^0-9]%'
+
+
+
+
+Задание: 28 (Serge I: 2015-03-20)
+C точностью до двух десятичных знаков определить среднее количество краски на квадрате.
+
+with tab1 as (select sum(b_vol) as qqq from utb
+group by b_q_id)
+
+select avg(qqq) avg_paint from tab1
+
+
+
+
+
+
+преобразование до 2-х десятичных знаков
+select CAST(AVG(numguns*1.00) AS numeric(6,2)) from classes
+where type='bb'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

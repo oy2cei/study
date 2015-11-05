@@ -52,6 +52,9 @@ all(colSums(is.na(restData))==0) все ли суммы NA по столбцам равны 0
 table(restData$zipCode %in% c("21212")) кол-во строк со значением 21212 в столбце зипкод. в виде табл
 restData[restData$zipCode %in% c("21212","21213") & restData$councilDistrict==12, ] выборка строк только с определенными значени€ми по столбцам
 
+prop.table(table(train$Sex, train$Survived),1) //даннные в %, 1-строки 2-столбцы или наоборот
+
+
 restData$nearMe = restData$neighborhood %in% c("Roland Park", "Homeland") //добавить новый столбец с проверкой €бл€етс€ ли значение в рамках указанных. потом можно агрегировать с помощью table
 
 ifelse(test, yes, no) //быстра€ проверка и возврат в случае выполнени€ и невыполнени€

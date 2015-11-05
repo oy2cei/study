@@ -1,3 +1,11 @@
+основное
+git status
+git add filename.ext
+git commit -a -m 'comment to the commit'
+git push site master загрузить на сайт ветку мастер
+
+
+
 clear
 git config --list переменные и алиасы
 git init при нахождении в папке заводит новый репозиторий папку .git
